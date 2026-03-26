@@ -24,7 +24,7 @@ const AUTO_PROPAGATE_RESULTS_TO_GITHUB = GITHUB_CLI_AVAILABLE;
  * * Runs `git cherry-pick {commitHash}` for each PR
  * * It keeps track of the failed cherry-picks and then retries them
  * * Retrying keeps going as long as at least one cherry-pick succeeds
- * * Pushes the local branch to `origin`
+ * * Pushes the local branch to `tyxla`
  * * (optional) Uses the [`gh` console utility](https://cli.github.com/) to comment on the remote PRs and remove the labels
  * * Reports the results
  */
@@ -48,11 +48,11 @@ async function main() {
 	console.log( `` );
 	await promptDoYouWantToProceed();
 
-	console.log( `$ git pull origin ${ BRANCH } --rebase...` );
-	cli( 'git', [ 'pull', 'origin', BRANCH, '--rebase' ], true );
+	console.log( `$ git pull tyxla ${ BRANCH } --rebase...` );
+	cli( 'git', [ 'pull', 'tyxla', BRANCH, '--rebase' ], true );
 
-	console.log( `$ git fetch origin trunk...` );
-	cli( 'git', [ 'fetch', 'origin', 'trunk' ], true );
+	console.log( `$ git fetch tyxla trunk...` );
+	cli( 'git', [ 'fetch', 'tyxla', 'trunk' ], true );
 
 	const PRs = await fetchPRs();
 	console.log( 'Trying to cherry-pick one by one...' );
@@ -63,9 +63,9 @@ async function main() {
 
 	if ( successes.length ) {
 		if ( AUTO_PROPAGATE_RESULTS_TO_GITHUB ) {
-			console.log( `About to push to origin/${ BRANCH }` );
+			console.log( `About to push to tyxla/${ BRANCH }` );
 			await promptDoYouWantToProceed();
-			cli( 'git', [ 'push', 'origin', BRANCH ] );
+			cli( 'git', [ 'push', 'tyxla', BRANCH ] );
 
 			console.log( `Commenting and removing labels...` );
 			successes.forEach( GHcommentAndRemoveLabel );
@@ -485,7 +485,7 @@ function prComment( cherryPickHash ) {
 function getMilestoneFromBranch() {
 	const match = BRANCH.match( /release\/(\d+\.\d+)/ );
 	return match ? `Gutenberg ${ match[ 1 ] }` : null;
-}
+gi}
 
 /**
  * Returns the current git branch.
